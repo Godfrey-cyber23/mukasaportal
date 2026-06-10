@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUKASA Executive Portal</title>
+    <!-- Tailwind CSS for Stunning UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#1e3a8a', // Deep Navy Blue
+                        accent: '#d97706', // Dignified Gold/Amber
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar & minor tweaks */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 4px; }
+        .sidebar-link:hover, .sidebar-link.active { background: rgba(255,255,255,0.1); border-left: 4px solid #d97706; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- ========== AUTHENTICATION SECTION ========== -->
+    <div id="authSection" class="min-h-screen flex items-center justify-center bg-brand p-4">
+        <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md">
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-bold text-brand">MUKASA</h1>
+                <p class="text-gray-500 text-sm">Executive Portal</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Admin Login</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email Address</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-brand" id="email" type="email" placeholder="admin@mukasa.org">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-brand" id="password" type="password" placeholder="******************">
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <button onclick="loginToPortal()" class="bg-brand hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-300">
+                        Sign In <i class="fas fa-sign-in-alt ml-2"></i>
+                    </button>
+                </div>
+                <div class="text-center text-sm">
+                    <a onclick="showForgotPassword()" href="#" class="text-accent hover:underline">Forgot Password?</a>
+                    <span class="mx-2 text-gray-300">|</span>
+                    <a onclick="showSignup()" href="#" class="text-accent hover:underline">Sign Up (Admin Only)</a>
+                </div>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div id="forgotForm" class="hidden">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Reset Password</h2>
+                <p class="text-gray-600 text-sm mb-4">Enter your email to receive a reset link.</p>
+                <div class="mb-4">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-brand" type="email" placeholder="Enter email">
+                </div>
+                <button class="bg-accent hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded w-full mb-4 transition duration-300">Send Reset Link</button>
+                <p class="text-center text-sm"><a onclick="showLogin()" href="#" class="text-brand hover:underline">Back to Login</a></p>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signupForm" class="hidden">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Admin Registration</h2>
+                <div class="mb-3">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-brand" type="text" placeholder="Full Name">
+                </div>
+                <div class="mb-3">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-brand" type="email" placeholder="Email Address">
+                </div>
+                <div class="mb-3">
+                    <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-brand">
+                        <option>Select Role</option>
+                        <option>Chairperson</option>
+                        <option>Treasurer</option>
+                        <option>Secretary</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-brand" type="password" placeholder="Create Password">
+                </div>
+                <button class="bg-brand hover:bg-blue-900 text-white font-bold py-2 px-4 rounded w-full mb-4 transition duration-300">Register</button>
+                <p class="text-center text-sm"><a onclick="showLogin()" href="#" class="text-brand hover:underline">Back to Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== DASHBOARD SECTION ========== -->
+    <div id="dashboardSection" class="hidden flex h-screen overflow-hidden">
+        
+        <!-- Sidebar -->
+        <div id="sidebar" class="hidden md:flex flex-col w-64 bg-brand text-white">
+            <div class="p-4 border-b border-blue-800">
+                <h1 class="text-2xl font-bold tracking-wider">MUKASA</h1>
+                <p class="text-xs text-blue-300">Executive Portal</p>
+            </div>
+            <nav class="flex-1 px-2 py-4 space-y-2">
+                <a href="#" class="sidebar-link active block px-4 py-2 rounded"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a>
+                <a href="#" class="sidebar-link block px-4 py-2 rounded"><i class="fas fa-calendar-alt mr-2"></i> Calendar & Events</a>
+                <a href="#" class="sidebar-link block px-4 py-2 rounded"><i class="fas fa-coins mr-2"></i> Treasury Hub</a>
+                <a href="#" class="sidebar-link block px-4 py-2 rounded"><i class="fas fa-file-alt mr-2"></i> Secretary Hub</a>
+                <a href="#" class="sidebar-link block px-4 py-2 rounded"><i class="fas fa-folder mr-2"></i> Document Vault</a>
+            </nav>
+            <div class="p-4 border-t border-blue-800">
+                <button onclick="logout()" class="w-full text-left px-4 py-2 hover:bg-red-500 rounded transition"><i class="fas fa-sign-out-alt mr-2"></i> Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <!-- Top Nav -->
+            <header class="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-10">
+                <button onclick="toggleMobileMenu()" class="md:hidden text-gray-600 text-xl"><i class="fas fa-bars"></i></button>
+                <h2 class="text-xl font-semibold text-gray-800">Welcome, Admin</h2>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-brand relative">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span> <!-- 3-Week Alert Simulation -->
+                    </button>
+                    <div class="w-10 h-10 bg-brand text-white rounded-full flex items-center justify-center font-bold">A</div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <main class="p-6">
+                <!-- Quick Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-brand hover:shadow-md transition">
+                        <h3 class="text-gray-500 text-sm font-bold uppercase">Total Funds (Nov)</h3>
+                        <p class="text-3xl font-bold text-gray-800">$2,450.00</p>
+                        <p class="text-green-500 text-sm mt-2"><i class="fas fa-arrow-up"></i> +12% from Oct</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-accent hover:shadow-md transition">
+                        <h3 class="text-gray-500 text-sm font-bold uppercase">Pending Fees</h3>
+                        <p class="text-3xl font-bold text-gray-800">$350.00</p>
+                        <p class="text-red-500 text-sm mt-2"><i class="fas fa-user-times"></i> 5 members</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500 hover:shadow-md transition">
+                        <h3 class="text-gray-500 text-sm font-bold uppercase">Next Event Budget</h3>
+                        <p class="text-3xl font-bold text-gray-800">$800.00</p>
+                        <p class="text-blue-500 text-sm mt-2"><i class="fas fa-calendar-check"></i> Christmas Party</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-red-500 hover:shadow-md transition">
+                        <h3 class="text-gray-500 text-sm font-bold uppercase">3-Week Alert!</h3>
+                        <p class="text-xl font-bold text-gray-800">Deanery Meeting</p>
+                        <p class="text-red-500 text-sm mt-2"><i class="fas fa-exclamation-circle"></i> Dec 15th</p>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-gray-700">Revenue vs Expenses</h3>
+                            <button class="text-sm bg-gray-100 px-3 py-1 rounded hover:bg-gray-200"><i class="fas fa-download mr-1"></i> Export</button>
+                        </div>
+                        <canvas id="revenueChart" height="100"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-gray-700">Event Budget Split</h3>
+                            <button class="text-sm bg-gray-100 px-3 py-1 rounded hover:bg-gray-200"><i class="fas fa-download mr-1"></i> Export</button>
+                        </div>
+                        <canvas id="budgetChart" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activity / Quick Actions -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-gray-700 mb-4">Recent Collections</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <div><p class="font-semibold text-gray-700">Monthly Fee - John Doe</p><p class="text-xs text-gray-500">Nov 10, 2023</p></div>
+                                <span class="text-green-600 font-bold">$50.00</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <div><p class="font-semibold text-gray-700">Unexpected Donation</p><p class="text-xs text-gray-500">Nov 08, 2023</p></div>
+                                <span class="text-green-600 font-bold">$120.00</span>
+                            </div>
+                        </div>
+                        <button class="mt-4 w-full bg-brand/10 text-brand py-2 rounded font-semibold hover:bg-brand/20 transition">View All Transactions</button>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-gray-700 mb-4">Quick Actions</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button className="p-4 bg-blue-50 text-brand rounded-lg hover:bg-blue-100 transition flex flex-col items-center justify-center">
+                                <i class="fas fa-money-bill-wave text-2xl mb-2"></i> Record Fee
+                            </button>
+                            <button className="p-4 bg-amber-50 text-accent rounded-lg hover:bg-amber-100 transition flex flex-col items-center justify-center">
+                                <i class="fas fa-file-invoice text-2xl mb-2"></i> Add Expense
+                            </button>
+                            <button className="p-4 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition flex flex-col items-center justify-center">
+                                <i class="fas fa-pencil-alt text-2xl mb-2"></i> New Minute
+                            </button>
+                            <button className="p-4 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition flex flex-col items-center justify-center">
+                                <i class="fas fa-calendar-plus text-2xl mb-2"></i> New Event
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Auth Toggle Logic ---
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('forgotForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+        }
+        function showForgotPassword() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('forgotForm').classList.remove('hidden');
+        }
+        function showSignup() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.remove('hidden');
+        }
+
+        // --- Login Simulation ---
+        function loginToPortal() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            document.getElementById('dashboardSection').classList.add('flex');
+            initCharts(); // Initialize charts when dashboard loads
+        }
+
+        function logout() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('authSection').classList.remove('hidden');
+            showLogin(); // Reset to login form
+        }
+
+        // --- Mobile Menu Toggle ---
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('absolute');
+            sidebar.classList.toggle('z-50');
+            sidebar.classList.toggle('h-full');
+        }
+
+        // --- Chart.js Initialization ---
+        function initCharts() {
+            // Revenue vs Expenses Chart
+            const ctxBar = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['June', 'July', 'Aug', 'Sept', 'Oct', 'Nov'],
+                    datasets: [{
+                        label: 'Revenue (Fees/Donations)',
+                        data: [1200, 1900, 1500, 2100, 2200, 2450],
+                        backgroundColor: '#1e3a8a',
+                        borderRadius: 4
+                    }, {
+                        label: 'Expenses (Events/Operations)',
+                        data: [800, 1200, 1000, 1400, 1100, 800],
+                        backgroundColor: '#d97706',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // Budget Split Chart
+            const ctxDoughnut = document.getElementById('budgetChart').getContext('2d');
+            new Chart(ctxDoughnut, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Venue', 'Food', 'Transport', 'Stationery'],
+                    datasets: [{
+                        data: [300, 250, 150, 100],
+                        backgroundColor: ['#1e3a8a', '#d97706', '#10b981', '#ef4444'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
