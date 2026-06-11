@@ -51,7 +51,7 @@ async function navigateTo(pageId) {
     if(activeLink) activeLink.classList.add('active');
 
     // Update Title
-    const titles = { dashboard: 'Dashboard', calendar: 'Calendar & 3-Week Reminders', treasury: 'Treasury Hub', secretary: 'Secretary Hub', vault: 'Document Vault' };
+    const titles = { dashboard: 'Dashboard', calendar: 'Calendar', treasury: 'Treasury Hub', secretary: 'Secretary Hub', vault: 'Document Vault' };
     document.getElementById('pageTitle').textContent = titles[pageId] || 'Dashboard';
 
     // Close mobile menu automatically when a link is clicked
